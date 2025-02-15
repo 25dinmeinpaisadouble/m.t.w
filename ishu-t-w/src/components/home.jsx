@@ -3,7 +3,7 @@ import React from 'react'
 const Home = () => {
   return (
     <div>
-      <section id="Home" className="min-h-screen pt-32 flex flex-col items-center justify-center p-4 sm:p-8 text-center transition-all duration-1000 opacity-100 translate-y-0">
+      <section id="Home" className="bg-[#eef3ff] min-h-screen pt-32 flex flex-col items-center justify-center p-4 sm:p-8 text-center transition-all duration-1000 opacity-100 translate-y-0">
         <div className="max-w-4xl mx-auto px-4">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-blue-900 mb-4 sm:mb-6 tracking-tight leading-tight">
             Learn. Grow. Succeed.
