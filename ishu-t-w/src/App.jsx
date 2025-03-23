@@ -8,6 +8,7 @@ import SubjectsPricing from './components/SubjectsPricing';
 import Reviews from './components/Reviews';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import FAQ from './components/FAQ';
 
 function App() {
   // Initialize AOS animation library
@@ -36,6 +37,7 @@ function App() {
       <SubjectsPricing />
       <Reviews />
       <Contact />
+      <FAQ />
       <Footer />
     </div>
   );
