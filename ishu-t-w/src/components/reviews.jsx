@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+// Make sure AOS is already initialized in your App.js
 
 const Reviews = () => {
   // Sample review data
@@ -68,24 +69,6 @@ const Reviews = () => {
     
     // Cleanup
     return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  // Animation for scroll reveal
-  useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('animate-reveal');
-        }
-      });
-    }, { threshold: 0.1 });
-    
-    const elements = document.querySelectorAll('.reveal-item');
-    elements.forEach(el => observer.observe(el));
-    
-    return () => {
-      elements.forEach(el => observer.unobserve(el));
-    };
   }, []);
 
   // Auto-scroll the carousel
@@ -237,10 +220,17 @@ const Reviews = () => {
   };
 
   return (
-    <section id="reviews" className="min-h-screen flex items-center py-16 sm:py-20 bg-gradient-to-b from-white via-blue-50/50 to-white scroll-mt-20">
+    <section 
+      id="reviews" 
+      className="min-h-screen flex items-center py-16 sm:py-20 bg-gradient-to-b from-white via-blue-50/50 to-white scroll-mt-20"
+    >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         {/* Section heading */}
-        <div className="text-center mb-12 reveal-item opacity-0 transition-all duration-700">
+        <div 
+          className="text-center mb-12"
+          data-aos="fade-down"
+          data-aos-duration="800"
+        >
           <h2 className="text-3xl sm:text-4xl font-bold text-blue-600 mb-3">
             Student Reviews
           </h2>
@@ -250,7 +240,12 @@ const Reviews = () => {
         </div>
 
         {/* Carousel container */}
-        <div className="relative reveal-item opacity-0 transition-all duration-700 delay-100">
+        <div 
+          className="relative"
+          data-aos="fade-up"
+          data-aos-duration="1000"
+          data-aos-delay="200"
+        >
           {/* Carousel */}
           <div 
             ref={carouselRef}
@@ -309,6 +304,8 @@ const Reviews = () => {
             onClick={handlePrev}
             className="absolute top-1/2 -left-5 sm:-left-8 -translate-y-1/2 w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center text-blue-600 z-10 hover:bg-blue-50 transition-colors duration-300 focus:outline-none"
             aria-label="Previous slide"
+            data-aos="fade-right"
+            data-aos-delay="400"
           >
             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
@@ -319,6 +316,8 @@ const Reviews = () => {
             onClick={handleNext}
             className="absolute top-1/2 -right-5 sm:-right-8 -translate-y-1/2 w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center text-blue-600 z-10 hover:bg-blue-50 transition-colors duration-300 focus:outline-none"
             aria-label="Next slide"
+            data-aos="fade-left"
+            data-aos-delay="400"
           >
             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
@@ -327,12 +326,20 @@ const Reviews = () => {
         </div>
 
         {/* Pagination dots */}
-        <div className="flex justify-center mt-8 reveal-item opacity-0 transition-all duration-700 delay-200">
+        <div 
+          className="flex justify-center mt-8"
+          data-aos="fade-up"
+          data-aos-delay="600"
+        >
           {renderPaginationDots()}
         </div>
 
         {/* CTA */}
-        <div className="text-center mt-12 reveal-item opacity-0 transition-all duration-700 delay-300">
+        <div 
+          className="text-center mt-12"
+          data-aos="zoom-in"
+          data-aos-delay="800"
+        >
           <a 
             href="#contact" 
             className="inline-flex items-center justify-center text-base font-medium h-12 px-8 bg-blue-600 hover:bg-blue-700 rounded-full shadow-md hover:shadow-lg transition-all duration-300 text-white"
@@ -341,17 +348,6 @@ const Reviews = () => {
           </a>
         </div>
       </div>
-
-      {/* Add CSS for reveal animation */}
-      <style jsx>{`
-        .animate-reveal {
-          opacity: 1;
-          transform: translateY(0);
-        }
-        .reveal-item {
-          transform: translateY(20px);
-        }
-      `}</style>
     </section>
   );
 };

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Marquee from 'react-fast-marquee';
 import logo from '../assets/Logo.png';
+// Make sure AOS is already initialized in your App.js
 
 const Navbar = () => {
   // State for mobile menu toggle
@@ -49,7 +50,12 @@ const Navbar = () => {
   return (
     <header className="fixed w-full z-50">
       {/* Announcement Bar */}
-      <div className="w-full bg-blue-600 text-white overflow-hidden cursor-pointer" onClick={() => window.location.href = '#contact'}>
+      <div 
+        className="w-full bg-blue-600 text-white overflow-hidden cursor-pointer" 
+        onClick={() => window.location.href = '#contact'}
+        data-aos="fade-down"
+        data-aos-duration="800"
+      >
         <Marquee
           speed={75}
           pauseOnHover={true}
@@ -69,12 +75,23 @@ const Navbar = () => {
       </div>
 
       {/* Main Navbar */}
-      <div className={`w-full transition-all duration-300 ${navbarBg ? 'bg-white shadow-md' : 'bg-transparent'}`}>
+      <div 
+        className={`w-full transition-all duration-300 ${navbarBg ? 'bg-white shadow-md' : 'bg-transparent'}`}
+        data-aos="fade"
+        data-aos-duration="1000"
+        data-aos-offset="0"
+      >
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex justify-between items-center py-2 md:justify-start md:space-x-10">
             {/* Logo / Brand */}
             <div className="flex justify-start lg:w-0 lg:flex-1">
-              <a href="#Home" className="font-bold text-xl text-blue-600 hover:text-blue-700">
+              <a 
+                href="#Home" 
+                className="font-bold text-xl text-blue-600 hover:text-blue-700"
+                data-aos="fade-right"
+                data-aos-duration="1000"
+                data-aos-offset="0"
+              >
                 <img 
                   src={logo} 
                   alt="StudyCave Logo" 
@@ -106,12 +123,16 @@ const Navbar = () => {
 
             {/* Desktop menu */}
             <nav className="hidden md:flex space-x-10">
-              {navLinks.map((link) => (
+              {navLinks.map((link, index) => (
                 <a
                   key={link.name}
                   href={link.href}
                   className="text-base font-medium text-gray-600 hover:text-blue-600 hover:underline underline-offset-8 decoration-2 transition-colors duration-200"
                   onClick={closeMenu}
+                  data-aos="fade-down"
+                  data-aos-delay={index * 100}
+                  data-aos-duration="800"
+                  data-aos-offset="0"
                 >
                   {link.name}
                 </a>
@@ -124,6 +145,9 @@ const Navbar = () => {
                 href="#contact"
                 className="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-full shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 hover:shadow-lg transition-all duration-200"
                 onClick={closeMenu}
+                data-aos="fade-left"
+                data-aos-duration="1000"
+                data-aos-offset="0"
               >
                 Book Now
               </a>
@@ -137,12 +161,15 @@ const Navbar = () => {
           id="mobile-menu"
         >
           <div className="px-2 pt-2 pb-3 space-y-1 bg-white shadow-lg rounded-b-lg">
-            {navLinks.map((link) => (
+            {navLinks.map((link, index) => (
               <a
                 key={link.name}
                 href={link.href}
                 className="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50"
                 onClick={closeMenu}
+                style={{
+                  animation: isMenuOpen ? `fadeInRight 0.${3 + index}s ease forwards` : 'none'
+                }}
               >
                 {link.name}
               </a>
@@ -153,6 +180,9 @@ const Navbar = () => {
                 href="#contact"
                 className="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-full shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700"
                 onClick={closeMenu}
+                style={{
+                  animation: isMenuOpen ? 'fadeInRight 0.8s ease forwards' : 'none'
+                }}
               >
                 Book Now
               </a>
@@ -160,6 +190,20 @@ const Navbar = () => {
           </div>
         </div>
       </div>
+
+      {/* Add keyframe animation for mobile menu */}
+      <style jsx>{`
+        @keyframes fadeInRight {
+          from {
+            opacity: 0;
+            transform: translateX(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+      `}</style>
     </header>
   );
 };

@@ -1,36 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+// Make sure AOS is already initialized in your App.js
 
 const SubjectsPricing = () => {
-  // Animation on scroll
-  useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('animate-reveal');
-        }
-      });
-    }, { threshold: 0.1 });
-    
-    const elements = document.querySelectorAll('.reveal-item');
-    elements.forEach(el => observer.observe(el));
-    
-    return () => {
-      elements.forEach(el => observer.unobserve(el));
-    };
-  }, []);
-
-  // Subject Card Component
-  const SubjectCard = ({ name, price, level }) => {
-    const [isHovered, setIsHovered] = useState(false);
-    
+  // Subject Card Component - Simplified without hover effects
+  const SubjectCard = ({ name, price, level, index }) => {
     return (
       <div 
-        className={`rounded-xl border border-gray-200 bg-white shadow-sm transition-all duration-300 ${isHovered ? 'shadow-md' : ''}`}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+        className="rounded-xl border border-gray-200 bg-white shadow-sm"
+        data-aos="fade-up"
+        data-aos-delay={index * 100}
       >
         {/* Top color indicator */}
-        <div className={`h-1 w-full rounded-t-xl bg-blue-500`}></div>
+        <div className="h-1 w-full rounded-t-xl bg-blue-500"></div>
         
         <div className="p-5">
           <h3 className="text-lg font-semibold text-gray-800 mb-3">
@@ -97,18 +78,24 @@ const SubjectsPricing = () => {
   return (
     <section id="subjects" className="min-h-screen flex items-center py-16 sm:py-20 bg-blue-50/50 scroll-mt-20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div className="text-center mb-12 reveal-item opacity-0 transition-all duration-700">
+        <div 
+          className="text-center mb-12"
+          data-aos="fade-down"
+        >
           <h2 className="text-3xl sm:text-4xl font-bold text-blue-600 mb-3">
             Tutoring Subjects & Pricing
           </h2>
         </div>
         
         {/* Subject Categories */}
-        <div className="space-y-12 reveal-item opacity-0 transition-all duration-700 delay-200">
+        <div className="space-y-12">
           {/* Map through each category */}
-          {subjectData.map((category, idx) => (
-            <div key={idx} className="mb-10">
-              <div className="mb-4">
+          {subjectData.map((category, categoryIdx) => (
+            <div key={categoryIdx} className="mb-10">
+              <div 
+                className="mb-4"
+                data-aos="fade-up"
+              >
                 <h3 className="text-2xl font-semibold text-gray-800">
                   {category.category}
                   <span className="text-lg font-normal text-gray-500 ml-2">
@@ -124,6 +111,7 @@ const SubjectsPricing = () => {
                     name={subject.name}
                     price={subject.price}
                     level={category.level}
+                    index={index}
                   />
                 ))}
               </div>
@@ -132,7 +120,10 @@ const SubjectsPricing = () => {
         </div>
         
         {/* Additional Information */}
-        <div className="bg-gray-50/50 rounded-lg p-6 mt-10 border border-blue-200 reveal-item opacity-0 transition-all duration-700 delay-300">
+        <div 
+          className="bg-gray-50/50 rounded-lg p-6 mt-10 border border-blue-200"
+          data-aos="fade-up"
+        >
           <h4 className="text-lg font-medium text-blue-800 mb-2">Additional Information</h4>
           <ul className="space-y-2 text-sm text-gray-700">
             <li className="flex items-start">
@@ -157,26 +148,18 @@ const SubjectsPricing = () => {
         </div>
         
         {/* CTA Button */}
-        <div className="text-center mt-10 reveal-item opacity-0 transition-all duration-700 delay-400">
+        <div 
+          className="text-center mt-10"
+          data-aos="fade-up"
+        >
           <a 
             href="#contact" 
-            className="inline-flex items-center justify-center text-base font-medium h-12 px-8 bg-blue-600 hover:bg-blue-700 rounded-full shadow-md hover:shadow-lg transition-all duration-300 text-white"
+            className="inline-flex items-center justify-center text-base font-medium h-12 px-8 bg-blue-600 hover:bg-blue-700 rounded-full shadow-md text-white"
           >
             Enquire about private tuition rates
           </a>
         </div>
       </div>
-      
-      {/* Add CSS for reveal animation */}
-      <style jsx>{`
-        .animate-reveal {
-          opacity: 1;
-          transform: translateY(0);
-        }
-        .reveal-item {
-          transform: translateY(20px);
-        }
-      `}</style>
     </section>
   );
 };
