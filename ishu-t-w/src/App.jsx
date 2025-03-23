@@ -6,11 +6,13 @@ import SubjectsPricing from './components/SubjectsPricing'
 import Reviews from './components/Reviews'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
+import AnnouncementBar from './components/AnnouncementBar'
 
 function App() {
 
   return (
       <div>
+        {/* <AnnouncementBar /> */}
         <Navbar />
         <Home />
         <About />

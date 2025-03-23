@@ -10,7 +10,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           {/* About column */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Study Cave</h3>
+            <h3 className="text-lg font-semibold mb-4">StudyCave</h3>
             <p className="text-gray-400 text-sm leading-relaxed mb-4">
               Personalised tutoring services for students of all levels. 
               Helping students achieve academic excellence through expert guidance and engaging lessons.
@@ -97,7 +97,7 @@ const Footer = () => {
           <div className="flex flex-col md:flex-row justify-between items-center">
             {/* Copyright */}
             <p className="text-gray-400 text-sm mb-4 md:mb-0">
-              © {currentYear} Study Cave. All rights reserved.
+              © {currentYear} StudyCave. All rights reserved.
             </p>
           </div>
         </div>

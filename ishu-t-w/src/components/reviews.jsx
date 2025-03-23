@@ -45,6 +45,9 @@ const Reviews = () => {
   // Calculate how many cards to show based on viewport
   const [cardsToShow, setCardsToShow] = useState(3);
 
+  // Calculate maximum valid index
+  const maxValidIndex = Math.max(0, reviews.length - cardsToShow);
+
   // Update cards to show based on window size
   useEffect(() => {
     const handleResize = () => {
@@ -96,53 +99,89 @@ const Reviews = () => {
     return () => clearInterval(interval);
   }, [currentIndex, isAnimating]);
 
-  // Handle next slide
+  // Handle next slide with proper looping
   const handleNext = () => {
     if (isAnimating) return;
     
     setIsAnimating(true);
-    setCurrentIndex(prevIndex => 
-      prevIndex === reviews.length - cardsToShow ? 0 : prevIndex + 1
-    );
+    
+    // If we're at the last valid index, reset to 0
+    if (currentIndex >= maxValidIndex) {
+      setCurrentIndex(0);
+    } else {
+      setCurrentIndex(prevIndex => prevIndex + 1);
+    }
     
     setTimeout(() => {
       setIsAnimating(false);
     }, 500); // Match this with the CSS transition duration
   };
 
-  // Handle previous slide
+  // Handle previous slide with proper looping
   const handlePrev = () => {
     if (isAnimating) return;
     
     setIsAnimating(true);
-    setCurrentIndex(prevIndex => 
-      prevIndex === 0 ? reviews.length - cardsToShow : prevIndex - 1
-    );
+    
+    // If we're at the first index, go to the last valid index
+    if (currentIndex === 0) {
+      setCurrentIndex(maxValidIndex);
+    } else {
+      setCurrentIndex(prevIndex => prevIndex - 1);
+    }
     
     setTimeout(() => {
       setIsAnimating(false);
-    }, 500); // Match this with the CSS transition duration
+    }, 500);
   };
 
-  // Handle touch events for mobile swipe
+  // Enhanced touch events for mobile swipe with live slide movement
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragOffset, setDragOffset] = useState(0);
+  const slideWidth = 100 / cardsToShow; // Width of each slide in percentage
+  
   const handleTouchStart = (e) => {
+    setIsDragging(true);
     setTouchStart(e.targetTouches[0].clientX);
+    setTouchEnd(e.targetTouches[0].clientX);
+    setDragOffset(0);
   };
   
   const handleTouchMove = (e) => {
+    if (!isDragging) return;
+    
     setTouchEnd(e.targetTouches[0].clientX);
+    
+    // Calculate how far we've dragged as a percentage of carousel width
+    const carouselWidth = carouselRef.current.offsetWidth;
+    const pixelOffset = touchEnd - touchStart;
+    const percentageOffset = (pixelOffset / carouselWidth) * 100;
+    
+    // Limit drag to the next/previous slide only
+    const boundedOffset = Math.max(
+      Math.min(percentageOffset, slideWidth),
+      -slideWidth
+    );
+    
+    setDragOffset(boundedOffset);
   };
   
   const handleTouchEnd = () => {
-    if (touchStart - touchEnd > 75) {
-      // Swipe left
+    setIsDragging(false);
+    
+    // If drag was significant enough, change slides
+    const swipeThreshold = 15; // Percentage threshold to trigger slide change
+    
+    if (dragOffset > swipeThreshold) {
+      // Swiped right - go to previous
+      handlePrev();
+    } else if (dragOffset < -swipeThreshold) {
+      // Swiped left - go to next
       handleNext();
     }
     
-    if (touchStart - touchEnd < -75) {
-      // Swipe right
-      handlePrev();
-    }
+    // Reset drag offset
+    setDragOffset(0);
   };
 
   // Review Card Component
@@ -173,7 +212,7 @@ const Reviews = () => {
   // Generate pagination dots
   const renderPaginationDots = () => {
     const dots = [];
-    const numDots = reviews.length - cardsToShow + 1;
+    const numDots = Math.min(reviews.length - cardsToShow + 1, reviews.length);
 
     for (let i = 0; i < numDots; i++) {
       dots.push(
@@ -215,14 +254,44 @@ const Reviews = () => {
           {/* Carousel */}
           <div 
             ref={carouselRef}
-            className="overflow-hidden"
+            className="overflow-hidden touch-pan-y"
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
+            onMouseDown={(e) => {
+              setIsDragging(true);
+              setTouchStart(e.clientX);
+              setTouchEnd(e.clientX);
+              setDragOffset(0);
+            }}
+            onMouseMove={(e) => {
+              if (!isDragging) return;
+              setTouchEnd(e.clientX);
+              
+              // Calculate drag offset for mouse movement
+              const carouselWidth = carouselRef.current.offsetWidth;
+              const pixelOffset = e.clientX - touchStart;
+              const percentageOffset = (pixelOffset / carouselWidth) * 100;
+              
+              const boundedOffset = Math.max(
+                Math.min(percentageOffset, slideWidth),
+                -slideWidth
+              );
+              
+              setDragOffset(boundedOffset);
+            }}
+            onMouseUp={handleTouchEnd}
+            onMouseLeave={() => {
+              if (isDragging) {
+                handleTouchEnd();
+              }
+            }}
           >
             <div 
-              className="flex transition-transform duration-500 ease-in-out" 
-              style={{ transform: `translateX(-${currentIndex * (100 / cardsToShow)}%)` }}
+              className={`flex ${isDragging ? '' : 'transition-transform duration-500 ease-in-out'}`}
+              style={{ 
+                transform: `translateX(calc(-${currentIndex * (100 / cardsToShow)}% + ${dragOffset}%))`
+              }}
             >
               {reviews.map(review => (
                 <div 
