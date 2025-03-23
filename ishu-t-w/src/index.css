@@ -1,6 +1,12 @@
 @import "tailwindcss";
 
-html, body {
-  height: 100%;
-  margin: 0;
+html {
+  scroll-behavior: smooth;
+}
+
+/* For browsers that support it, this provides native smooth scrolling */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }

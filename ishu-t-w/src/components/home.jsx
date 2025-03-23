@@ -11,9 +11,12 @@ const Home = () => {
           <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-6 sm:mb-8 font-light max-w-2xl mx-auto">
             Personalised Tutoring, Online and In-Person, for Every Learning Stage
           </p>
-          <button className="inline-flex items-center px-8 py-4 text-lg font-semibold text-white bg-blue-600 rounded-full shadow-lg hover:bg-blue-700 hover:shadow-xl transform hover:scale-105 transition-all duration-200 group">
+          <a 
+            href="#contact" 
+            className="inline-flex items-center px-8 py-4 text-lg font-semibold text-white bg-blue-600 rounded-full shadow-lg hover:bg-blue-700 hover:shadow-xl transform hover:scale-105 transition-all duration-200 group cursor-pointer"
+          >
             Get Started Today
-          </button>
+          </a>
         </div>
       </section>
 

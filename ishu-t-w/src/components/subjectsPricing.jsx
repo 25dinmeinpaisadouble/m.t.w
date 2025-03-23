@@ -1,101 +1,184 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
 
 const SubjectsPricing = () => {
-  const SubjectCard = ({ name, price, height = "" }) => {
+  // Animation on scroll
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate-reveal');
+        }
+      });
+    }, { threshold: 0.1 });
+    
+    const elements = document.querySelectorAll('.reveal-item');
+    elements.forEach(el => observer.observe(el));
+    
+    return () => {
+      elements.forEach(el => observer.unobserve(el));
+    };
+  }, []);
+
+  // Subject Card Component
+  const SubjectCard = ({ name, price, level }) => {
+    const [isHovered, setIsHovered] = useState(false);
+    
     return (
-      <div className={`rounded-[calc(var(--radius))] border border-border text-card-foreground shadow border-t-4 border-t-blue-500/70 bg-white ${height}`}>
-        <div className="flex flex-col space-y-1.5 p-6">
-          <h3 className="font-semibold tracking-tight text-lg sm:text-xl text-black">
+      <div 
+        className={`rounded-xl border border-gray-200 bg-white shadow-sm transition-all duration-300 ${isHovered ? 'shadow-md' : ''}`}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        {/* Top color indicator */}
+        <div className={`h-1 w-full rounded-t-xl bg-blue-500`}></div>
+        
+        <div className="p-5">
+          <h3 className="text-lg font-semibold text-gray-800 mb-3">
             {name}
           </h3>
-          <p className="text-sm text-muted-foreground mt-2 text-blue-600">{price}</p>
+          
+          <div className="mt-auto">
+            <p className="font-medium text-blue-500">{price}</p>
+          </div>
         </div>
       </div>
     );
   };
 
-  const subjects = [
+  // Subject data
+  const subjectData = [
     {
-      category: "Primary School (Years 3-6)",
-      courses: [
-        { name: "Mathematics", price: "$25/hr x 1.5hr class" },
-        { name: "English - Reading Comprehension & Writing", price: "$25/hr x 1.5hr class" }
-      ],
+      category: "Primary School",
+      subtitle: "Years 3-6",
+      level: "primary",
+      subjects: [
+        { 
+          name: "Mathematics", 
+          price: "$25/hr × 1.5hr class"
+        },
+        { 
+          name: "English", 
+          price: "$25/hr × 1.5hr class"
+        }
+      ]
     },
     {
-      category: "Years 7-10",
-      courses: [
-        { name: "Mathematics", price: "$30/hr x 2hr class" }
-      ],
+      category: "Middle School",
+      subtitle: "Years 7-10",
+      level: "middle",
+      subjects: [
+        { 
+          name: "Mathematics", 
+          price: "$30/hr × 2hr class"
+        }
+      ]
     },
     {
-      category: "Years 11-12 (HSC)",
-      courses: [
-        { name: "Mathematics (Stn/Adv)", price: "$35/hr x 2hr class" },
-        { name: "Physics", price: "$40/hr x 2hr class" }
-      ],
+      category: "Senior School",
+      subtitle: "Years 11-12 (HSC)",
+      level: "senior",
+      subjects: [
+        { 
+          name: "Mathematics (Standard/Advanced)", 
+          price: "$35/hr × 2hr class"
+        },
+        { 
+          name: "Physics", 
+          price: "$40/hr × 2hr class"
+        },
+        { 
+          name: "Chemistry", 
+          price: "$40/hr × 2hr class"
+        }
+      ]
     }
   ];
 
   return (
-    <section id="subjects" className="px-4 bg-gray-100">
-      <div className="max-w-6xl mx-auto transform transition-all duration-1000 ease-out translate-y-0 opacity-100 scale-100">
-        <h2 className="text-3xl font-bold text-center mb-12 text-blue-600">
-          Tutoring Subjects
-        </h2>
-
-        {/* Primary School */}
-        <div className="mb-12">
-          <h3 className="text-2xl font-semibold mb-6 text-blue-600">
-            {subjects[0].category}
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {subjects[0].courses.map((subject, index) => (
-              <SubjectCard key={index} name={subject.name} price={subject.price} />
-            ))}
-          </div>
+    <section id="subjects" className="min-h-screen flex items-center py-16 sm:py-20 bg-blue-50/50 scroll-mt-20">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div className="text-center mb-12 reveal-item opacity-0 transition-all duration-700">
+          <h2 className="text-3xl sm:text-4xl font-bold text-blue-600 mb-3">
+            Tutoring Subjects & Pricing
+          </h2>
         </div>
-
-        {/* High School */}
-        <div className="mb-12">
-          <h3 className="text-2xl font-semibold mb-8 text-blue-600">High School</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Years 7-10 */}
-            <div>
-              <h4 className="text-xl font-medium mb-4 text-gray-700">
-                {subjects[1].category}
-              </h4>
-              <SubjectCard name={subjects[1].courses[0].name} price={subjects[1].courses[0].price} height="h-[140px]" />
-            </div>
-
-            {/* Years 11-12 */}
-            <div className="col-span-2">
-              <h4 className="text-xl font-medium mb-4 text-gray-700">
-                {subjects[2].category}
-              </h4>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {subjects[2].courses.map((subject, index) => (
-                  <SubjectCard key={index} name={subject.name} price={subject.price} height="h-[140px]" />
+        
+        {/* Subject Categories */}
+        <div className="space-y-12 reveal-item opacity-0 transition-all duration-700 delay-200">
+          {/* Map through each category */}
+          {subjectData.map((category, idx) => (
+            <div key={idx} className="mb-10">
+              <div className="mb-4">
+                <h3 className="text-2xl font-semibold text-gray-800">
+                  {category.category}
+                  <span className="text-lg font-normal text-gray-500 ml-2">
+                    {category.subtitle}
+                  </span>
+                </h3>
+              </div>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {category.subjects.map((subject, index) => (
+                  <SubjectCard 
+                    key={index}
+                    name={subject.name}
+                    price={subject.price}
+                    level={category.level}
+                  />
                 ))}
               </div>
             </div>
-          </div>
+          ))}
         </div>
-
-        {/* Pricing Note */}
-        <p className="text-center text-gray-600 italic mb-6">
-          * All prices shown above are for group lessons
-        </p>
-
+        
+        {/* Additional Information */}
+        <div className="bg-gray-50/50 rounded-lg p-6 mt-10 border border-blue-200 reveal-item opacity-0 transition-all duration-700 delay-300">
+          <h4 className="text-lg font-medium text-blue-800 mb-2">Additional Information</h4>
+          <ul className="space-y-2 text-sm text-gray-700">
+            <li className="flex items-start">
+              <svg className="h-5 w-5 text-blue-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              All prices shown are for group lessons (3-6 students)
+            </li>
+            <li className="flex items-start">
+              <svg className="h-5 w-5 text-blue-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              One-on-one tutoring available at additional rates
+            </li>
+            <li className="flex items-start">
+              <svg className="h-5 w-5 text-blue-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              All lesson materials and resources included
+            </li>
+          </ul>
+        </div>
+        
         {/* CTA Button */}
-        <div className="text-center">
-          <button className="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 text-primary-foreground h-9 px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-full shadow-lg hover:shadow-xl transition-all duration-200">
-            Enquire about 1-on-1 tuition rates now
-          </button>
+        <div className="text-center mt-10 reveal-item opacity-0 transition-all duration-700 delay-400">
+          <a 
+            href="#contact" 
+            className="inline-flex items-center justify-center text-base font-medium h-12 px-8 bg-blue-600 hover:bg-blue-700 rounded-full shadow-md hover:shadow-lg transition-all duration-300 text-white"
+          >
+            Enquire about private tuition rates
+          </a>
         </div>
       </div>
+      
+      {/* Add CSS for reveal animation */}
+      <style jsx>{`
+        .animate-reveal {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        .reveal-item {
+          transform: translateY(20px);
+        }
+      `}</style>
     </section>
   );
-}
+};
 
-export default SubjectsPricing
+export default SubjectsPricing;
