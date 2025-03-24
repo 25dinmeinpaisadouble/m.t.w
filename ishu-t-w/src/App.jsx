@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import Navbar from './components/Navbar';
-import Home from './components/Home';
-import About from './components/About';
-import SubjectsPricing from './components/SubjectsPricing';
-import Reviews from './components/Reviews';
-import Contact from './components/Contact';
+import Navbar from './components/navbar';
+import Home from './components/home';
+import About from './components/about';
+import SubjectsPricing from './components/subjectsPricing';
+import Reviews from './components/reviews';
+import Contact from './components/contact';
 import Footer from './components/Footer';
 import FAQ from './components/FAQ';
 
