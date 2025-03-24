@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import Navbar from './components/Navbar.jsx';
+// import Navbar from './components/Navbar';
 import Home from './components/Home';
 import About from './components/About';
 import SubjectsPricing from './components/SubjectsPricing';
@@ -31,7 +31,7 @@ function App() {
 
   return (
     <div className="App">
-      <Navbar />
+      {/* <Navbar /> */}
       <Home />
       <About />
       <SubjectsPricing />
