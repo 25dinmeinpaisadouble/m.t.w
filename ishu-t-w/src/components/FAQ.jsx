@@ -5,28 +5,20 @@ const FAQ = () => {
   // FAQ data
   const faqItems = [
     {
-      question: "How are tutoring sessions structured?",
-      answer: "Our tutoring sessions are typically 1.5-2 hours long, depending on the subject and level. Each session includes concept review, problem-solving practice, and personalized guidance. We focus on building a strong understanding of core concepts while addressing individual learning needs and preparing for upcoming assessments."
-    },
-    {
       question: "Do you offer online tutoring?",
       answer: "Yes, we offer both in-person and online tutoring options. Our online sessions use interactive whiteboards and screen sharing to create an engaging virtual learning environment. Many students find online tutoring equally effective and appreciate the convenience and flexibility it provides."
     },
     {
-      question: "How much does tutoring cost?",
-      answer: "Our pricing varies based on the subject and level. Primary school sessions start at $25/hr, middle school at $30/hr, and senior school (HSC) at $35-40/hr. We offer both individual and group sessions, with group sessions providing a more cost-effective option. Please contact us for specific pricing for your needs."
-    },
-    {
-      question: "How often should my child attend tutoring?",
-      answer: "Most students attend weekly sessions to maintain consistent progress. This frequency allows us to align with school curricula and provide regular support. For intensive exam preparation or catching up on difficult topics, we may recommend twice-weekly sessions for a period of time."
-    },
-    {
-      question: "Do you provide learning materials?",
-      answer: "Yes, we provide comprehensive learning materials tailored to each student's needs. These include custom notes, practice worksheets, past exam papers, and additional resources. All materials are included in the tutoring fee and are designed to complement school curriculum."
+      question: "Do you provide tests?",
+      answer: "Yea, there will be 2 tests each term. The first test will be a mid-term test and the second test will be an end-term test."
     },
     {
       question: "How do I know if my child is making progress?",
-      answer: "We track student progress through regular assessments, homework reviews, and detailed feedback on strengths and areas for improvement. Parents receive updates after each session, and we conduct more comprehensive progress reviews monthly. We also encourage feedback from students about their confidence levels and school performance."
+      answer: "We track student progress through regular assessments, homework reviews, and detailed feedback on strengths and areas for improvement. Parents can additionally book in a call to discuss progress."
+    },
+    {
+        question: "Do you mark the HW?",
+        answer: "Yes, we mark the homework and provide feedback to the students."
     }
   ];
 
